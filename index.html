@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thông tin sinh viên</title>
+</head>
+<body>
+    <style>
+        body {
+          font-family: Arial;  
+        }
+        
+        h1 {
+          text-align: center;
+          background-color: #007bff;
+          color: white;
+          padding: 10px;
+        }
+        
+        table {
+          border: 1px solid #dddddd;
+          border-collapse: collapse;
+        }
+          
+        th, td {
+          border: 1px solid #dddddd;
+            padding: 5px 10px;
+        }
+        
+        button {
+             background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px; 
+            background-color: #0062cc;
+            cursor: pointer; 
+        }
+        div {
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            padding: 20px;
+        }
+        </style>
+
+  <h1>Thông tin sinh viên</h1>
+  
+  <form id="studentForm">
+    <label for="id">Mã SV:</label>
+    <input type="text" id="id" name="id"><br>
+    
+    <label for="name">Họ và tên:</label>  
+    <input type="text" id="name" name="name"><br>
+    
+    <label for="dob">Ngày sinh:</label>
+    <input type="text" id="dob" name="dob"><br>
+    
+    <label for="class">Lớp:</label>
+    <input type="text" id="class" name="class"><br>
+    
+    <label for="gpa">Điểm GPA:</label>
+    <input type="text" id="gpa" name="gpa"><br>
+    
+    <input type="button" value="Lưu" onclick="saveStudent()">
+  </form> 
+  
+  <hr>
+  
+  <table id="studentsTable">
+    <tr>
+      <th>Mã SV</th>
+      <th>Họ và tên</th>  
+      <th>Ngày sinh</th>
+      <th>Lớp</th>
+      <th>Điểm GPA</th>  
+      <th></th>
+    </tr>
+  </table>
+
+  <script>
+    let students = [];
+    
+    function Student(id, name, dob, studentClass, gpa) {
+      this.id = id;
+      this.name = name;
+      this.dob = dob;
+      this.studentClass = studentClass;
+      this.gpa = gpa;
+    }
+    
+    function saveStudent() {
+      let std = new Student(
+        document.getElementById("id").value, 
+        document.getElementById("name").value,
+        document.getElementById("dob").value,
+        document.getElementById("class").value,
+        document.getElementById("gpa").value
+      );
+      
+      let exists = false;
+      for(let i = 0; i < students.length; i++) {
+        if(students[i].id === std.id) {
+          students[i] = std;
+          exists = true;
+          break; 
+        }
+      }
+      
+      if(!exists){
+        students.push(std);  
+      }
+      
+      displayStudents();
+    }
+    
+    function displayStudents() {
+      let table = "";
+      for(let i = 0; i < students.length; i++) {
+        table += "<tr>";
+        table += "<td>" + students[i].id + "</td>";
+        table += "<td>" + students[i].name + "</td>";
+        table += "<td>" + students[i].dob + "</td>";
+        table += "<td>" + students[i].studentClass + "</td>"; 
+        table += "<td>" + students[i].gpa + "</td>";
+        table += '<td><button onclick="editStudent(' + i +')">Sửa</button></td>';
+        table += "</tr>";
+      }
+      document.getElementById("studentsTable").innerHTML = table;
+    }
+    
+    function editStudent(i) {
+      let std = students[i];
+      document.getElementById("id").value = std.id;
+      document.getElementById("name").value = std.name; 
+      document.getElementById("dob").value = std.dob;
+      document.getElementById("class").value = std.studentClass;  
+      document.getElementById("gpa").value = std.gpa;
+    }
+  </script>
+
+</body>
+</html>
